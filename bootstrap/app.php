@@ -17,6 +17,6 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
-            fn (Request $request) => $request->is('api/v1/*') || $request->expectsJson(), // change this line to check for API routes or JSON requests
+            fn (Request $request) => $request->is('api/*') || $request->expectsJson(), // change this line to check for API routes or JSON requests
         );
     })->create();
