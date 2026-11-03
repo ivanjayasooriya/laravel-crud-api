@@ -1,0 +1,438 @@
+{
+  "info": {
+    "_postman_id": "876caf7c-5b15-4c7b-98ad-0902cd22f95f",
+    "name": "Laravel CRUD API",
+    "description": "## Laravel CRUD API\n\nThis collection covers a RESTful CRUD API built with **Laravel**, organized around three core resources: **Customer**, **Item**, and **Order**.\n\nEach resource folder exposes the same consistent set of five operations:\n\n| Operation | Description |\n|-----------|-------------|\n| **CREATE** | Add a new record |\n| **GET ALL** | Retrieve all records for the resource |\n| **SEARCH** | Query or filter records by specific criteria |\n| **UPDATE** | Modify an existing record |\n| **DELETE** | Permanently remove a record |\n\n### Resources\n\n- **Customer** – Manage customer profiles and their associated data.\n- **Item** – Handle catalog items available within the system.\n- **Order** – Create and manage orders linking customers to items.\n\n### Usage\n\nUse this collection to develop, test, and validate the backend logic for a Laravel application. All endpoints follow a uniform structure, making it easy to extend the API or integrate it with a front-end interface or third-party service.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "49847053",
+    "_collection_link": "https://go.postman.co/collection/49847053-876caf7c-5b15-4c7b-98ad-0902cd22f95f?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Customer",
+      "item": [
+        {
+          "name": "CREATE",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"John Silva\",\r\n    \"email\": \"john@gmail.com\",\r\n    \"phone\": \"0771234567\",\r\n    \"address\": \"Colombo, Sri Lanka\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/customers",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "customers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET ALL",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/customers",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "customers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SEARCH",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/customers/1",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "customers",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UPDATE",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"John Silva Updated\",\r\n    \"email\": \"john@gmail.com\",\r\n    \"phone\": \"0711111111\",\r\n    \"address\": \"Kandy, Sri Lanka\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/customers/3",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "customers",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/customers/3",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "customers",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "## Customer\n\nThis folder contains all API endpoints for managing **customer** records within the Laravel CRUD API.\n\nIt exposes a complete set of RESTful operations:\n\n| Request | Description |\n|---------|-------------|\n| **CREATE** | Add a new customer record to the system |\n| **GET ALL** | Retrieve a list of all existing customers |\n| **SEARCH** | Query or filter customers by specific criteria |\n| **UPDATE** | Modify the details of an existing customer |\n| **DELETE** | Permanently remove a customer record |\n\nUse these endpoints to create, read, search, update, and delete customer profiles as part of the broader Laravel application backend."
+    },
+    {
+      "name": "Item",
+      "item": [
+        {
+          "name": "CREATE",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Mouse\",\r\n    \"description\": \"Wireless gaming mouse\",\r\n    \"price\": 1000.00,\r\n    \"stock\": 100\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/items",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "items"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET ALL",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/items",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "items"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SEARCH",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/items/1",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "items",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UPDATE",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Gaming Keyboard\",\r\n    \"description\": \"RGB mechanical keyboard\",\r\n    \"price\": 2000.00,\r\n    \"stock\": 60\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/items/3",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "items",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/items/4",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "items",
+                "4"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "## Item\n\nThis folder contains all API endpoints for managing **item** records within the Laravel CRUD API.\n\nIt exposes a complete set of RESTful operations:\n\n| Request | Description |\n|---------|-------------|\n| **CREATE** | Add a new item to the catalog |\n| **GET ALL** | Retrieve a list of all existing items |\n| **SEARCH** | Query or filter items by specific criteria |\n| **UPDATE** | Modify the details of an existing item |\n| **DELETE** | Permanently remove an item from the catalog |\n\nUse these endpoints to create, read, search, update, and delete catalog items as part of the broader Laravel application backend."
+    },
+    {
+      "name": "Order",
+      "item": [
+        {
+          "name": "CREATE",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"customer_id\": 1,\r\n    \"order_date\": \"2026-11-03\",\r\n    \"status\": \"pending\",\r\n    \"items\": [\r\n        {\r\n            \"item_id\": 1,\r\n            \"quantity\": 1\r\n        },\r\n        {\r\n            \"item_id\": 2,\r\n            \"quantity\": 2\r\n        }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/orders",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "orders"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET ALL",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/orders",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "orders"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SEARCH",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/orders/1",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "orders",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UPDATE",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"status\": \"processing\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/orders/1",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "orders",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/orders/1",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "orders",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "## Order\n\nThis folder contains all API endpoints for managing **order** records within the Laravel CRUD API.\n\nIt exposes a complete set of RESTful operations:\n\n| Request | Description |\n|---------|-------------|\n| **CREATE** | Place a new order linking a customer to one or more items |\n| **GET ALL** | Retrieve a list of all existing orders |\n| **SEARCH** | Query or filter orders by specific criteria |\n| **UPDATE** | Modify the details of an existing order |\n| **DELETE** | Permanently remove an order record |\n\nUse these endpoints to create, read, search, update, and delete orders as part of the broader Laravel application backend."
+    }
+  ]
+}
