@@ -10,7 +10,7 @@ use App\Http\Controllers\AuthController;
 
 // Authentication routes
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1'); // Limit login attempts to 5 per minute to prevent brute force attacks
 
 // Protected routes that require authentication
 Route::middleware('auth:sanctum')->group(function () {
