@@ -40,17 +40,66 @@ The default database connection is SQLite. MySQL and other Laravel-supported dat
 
 The API is available at `http://localhost:8000/api`. Import [Laravel CRUD API.postman_collection.json](./Laravel%20CRUD%20API.postman_collection.json) into Postman to try the requests.
 
+## Authentication
+
+This API uses Laravel Sanctum for stateless API authentication. Public authentication endpoints are:
+
+- `POST /api/register` - register a new user and create an API token
+- `POST /api/login` - log in an existing user and create an API token
+- `POST /api/logout` - revoke the current token
+- `GET /api/me` - fetch the authenticated user
+- `GET /api/user` - alias for the authenticated user, also backed by Sanctum
+
+After a successful login or registration, include the returned token in the `Authorization` header for protected requests:
+
+```http
+Authorization: Bearer <token>
+```
+
+### Register a user
+
+```http
+POST /api/register
+Content-Type: application/json
+```
+
+```json
+{
+  "name": "Ada Lovelace",
+  "email": "ada@example.com",
+  "password": "secret123",
+  "password_confirmation": "secret123"
+}
+```
+
+### Log in
+
+```http
+POST /api/login
+Content-Type: application/json
+```
+
+```json
+{
+  "email": "ada@example.com",
+  "password": "secret123"
+}
+```
+
+The login endpoint is rate-limited to 5 requests per minute to reduce brute-force attacks.
+
 ## API
 
 All request and response bodies use JSON. The list endpoints return the 10 most recently created records per page, with Laravel pagination metadata.
 
 | Resource | List | Create | Read, update, or delete |
 | --- | --- | --- | --- |
+| Auth | - | `POST /api/register`, `POST /api/login` | `POST /api/logout`, `GET /api/me` |
 | Customers | `GET /api/customers` | `POST /api/customers` | `GET`, `PUT`, `PATCH`, or `DELETE /api/customers/{id}` |
 | Items | `GET /api/items` | `POST /api/items` | `GET`, `PUT`, `PATCH`, or `DELETE /api/items/{id}` |
 | Orders | `GET /api/orders` | `POST /api/orders` | `GET`, `PUT`, `PATCH`, or `DELETE /api/orders/{id}` |
 
-Use `?page=2` to request another page. The customer, item, and order CRUD routes do not currently require authentication. `GET /api/user` requires a valid Sanctum-authenticated request.
+Use `?page=2` to request another page. The customer, item, and order CRUD routes are protected by Sanctum authentication and require a valid bearer token. `GET /api/user` also requires a valid Sanctum-authenticated request.
 
 ### Customers
 
