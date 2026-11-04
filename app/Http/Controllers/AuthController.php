@@ -20,7 +20,8 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
+            // 'password' => Hash::make($validated['password']), // This line is commented out because the User model is using the 'hashed' cast for the password attribute, which automatically hashes the password when it is set.
+            'password' => $validated['password'],
         ]);
 
         $token = $user->createToken('auth-token')->plainTextToken;
