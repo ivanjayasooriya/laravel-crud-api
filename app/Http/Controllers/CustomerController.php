@@ -77,6 +77,13 @@ class CustomerController extends Controller
     public function destroy(string $id)
     {
         $customer = Customer::findOrFail($id);
+
+        if ($customer->orders()->exists()) {
+            return response()->json([
+                'message' => 'Cannot delete customer with existing orders.',
+            ], 409); // Return a 409 status code if the customer has existing orders
+        }
+
         $customer->delete();
         return response()->json([ 
             'message' => 'Customer deleted successfully.',
