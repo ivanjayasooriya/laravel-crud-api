@@ -8,6 +8,7 @@ use App\Http\Resources\OrderResource;
 use App\Models\Item;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class OrderController extends Controller
 {
@@ -53,7 +54,9 @@ class OrderController extends Controller
                 $quantity = $orderItem['quantity'];
 
                 if ($item->stock < $quantity) {
-                    throw new \RuntimeException("Insufficient stock for item: {$item->name}");
+                    throw ValidationException::withMessages([
+                        'items' => ["Insufficient stock for item: {$item->name}. Available stock: {$item->stock}, requested: {$quantity}."],
+                    ]);
                 }
 
                 $subtotal = $item->price * $quantity;
