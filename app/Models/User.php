@@ -17,7 +17,7 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable, HasApiTokens;
+    use HasFactory, Notifiable, HasApiTokens; // This line is using three traits in the User model. The HasFactory trait allows the model to use factories for creating instances of the model. The Notifiable trait allows the model to send notifications. The HasApiTokens trait allows the model to issue API tokens for authentication.
 
     /**
      * The attributes that are mass assignable.
