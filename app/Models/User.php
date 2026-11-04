@@ -11,8 +11,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-#[Fillable(['name', 'email', 'password'])]
-#[Hidden(['password', 'remember_token'])]
+// these are Laravel 13 newer features that allow you to define the fillable and hidden attributes of the model using attributes instead of properties. This can make the code cleaner and easier to read.
+#[Fillable(['name', 'email', 'password'])] // This attribute is used to specify which attributes of the model are mass assignable. In this case, the 'name', 'email', and 'password' attributes can be mass assigned.
+#[Hidden(['password', 'remember_token'])] // This attribute is used to specify which attributes of the model should be hidden when the model is converted to an array or JSON. In this case, the 'password' and 'remember_token' attributes will be hidden.
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
