@@ -2,89 +2,70 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Item;
+use App\Services\ItemService;
 use App\Http\Resources\ItemResource;
+use App\Http\Requests\StoreItemRequest;
+use App\Http\Requests\UpdateItemRequest;
 
 class ItemController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    private ItemService $itemService;
+
+    public function __construct(ItemService $itemService)
+    {
+        $this->itemService = $itemService;
+    }
 
     // GET: Retrieve all items
     public function index()
     {
-        $items = Item::latest()->paginate(10); // Fetch items with pagination (10 per page)
+        $items = $this->itemService->getAllItems();
+
         return ItemResource::collection($items);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-
     // POST: Create a new item
-    public function store(Request $request)
+    public function store(StoreItemRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'price' => 'required|numeric|min:0.01',
-            'stock' => 'required|integer|min:0',
-        ]);
+        $item = $this->itemService->createItem(
+            $request->validated()
+        );
 
-        $item = Item::create($validated);
         return (new ItemResource($item))
             ->response()
             ->setStatusCode(201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-
     // GET: Retrieve a specific item
     public function show(string $id)
     {
-        $item = Item::findOrFail($id);
+        $item = $this->itemService->getItemById((int) $id);
+
         return new ItemResource($item);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-
-    // PUT/PATCH: Update a specific item
-    public function update(Request $request, string $id)
+    // PUT/PATCH: Update an existing item
+    public function update(UpdateItemRequest $request, string $id)
     {
-        $item = Item::findOrFail($id);
-        $validated = $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-            'description' => 'nullable|string',
-            'price' => 'sometimes|required|numeric|min:0.01',
-            'stock' => 'sometimes|required|integer|min:0',
-        ]);
+        $item = $this->itemService->updateItem(
+            (int) $id,
+            $request->validated()
+        );
 
-        $item->update($validated);
         return new ItemResource($item);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-
-    // DELETE: Remove a specific item
+    // DELETE: Remove an item
     public function destroy(string $id)
     {
-        $item = Item::findOrFail($id);
+        $deleted = $this->itemService->deleteItem((int) $id);
 
-        if ($item->orders()->exists()) {
+        if (!$deleted) {
             return response()->json([
                 'message' => 'Cannot delete item with existing orders.',
-            ], 409); // Return a 409 Conflict status code if the item has associated orders
+            ], 409);
         }
-        
-        $item->delete();
+
         return response()->json([
             'message' => 'Item deleted successfully.',
         ], 200);
