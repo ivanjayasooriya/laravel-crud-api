@@ -8,6 +8,7 @@ use Illuminate\Validation\ValidationException;
 use App\Repositories\Interfaces\ItemRepositoryInterface;
 use App\Repositories\Interfaces\OrderRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Log;
 
 class OrderService
 {
@@ -26,12 +27,16 @@ class OrderService
     // Retrieve all orders
     public function getAllOrders(): LengthAwarePaginator
     {
+        Log::info('All orders retrieved');
+
         return $this->orderRepository->getAll();
     }
 
     // Retrieve an order by ID
     public function getOrderById(int $id): Order
     {
+        Log::info("Order with ID {$id} retrieved");
+
         return $this->orderRepository->findById($id);
     }
 
@@ -69,6 +74,12 @@ class OrderService
                             . "requested: {$quantity}.",
                         ],
                     ]);
+
+                    Log::info(
+                        "Insufficient stock for item: {$item->name}. "
+                        . "Available stock: {$item->stock}, "
+                        . "requested: {$quantity}."
+                    );
                 }
 
                 // Convert the price to cents to calculate accurately
@@ -112,6 +123,12 @@ class OrderService
                 'total_amount' => $totalAmount,
             ]);
 
+            Log::info('Order created', [
+                'order_id' => $order->id,
+                'customer_id' => $data['customer_id'],
+                'total_amount' => $totalAmount,
+            ]);
+
             return $this->orderRepository->findById($order->id);
         });
     }
@@ -122,6 +139,8 @@ class OrderService
         $order = $this->orderRepository->findById($id);
 
         $this->orderRepository->update($order, $data);
+
+        Log::info("Order with ID {$id} updated", ['order' => $data]);
 
         return $this->orderRepository->findById($id);
     }
@@ -146,6 +165,8 @@ class OrderService
                     (int) $item->pivot->quantity
                 );
             }
+
+            Log::info("Order with ID {$id} deleted and stock restored");
 
             // Delete the order
             $this->orderRepository->delete($order);
