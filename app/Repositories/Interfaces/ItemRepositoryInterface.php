@@ -18,4 +18,10 @@ interface ItemRepositoryInterface
     public function delete(Item $item): void;
 
     public function hasOrders(Item $item): bool;
+
+    public function findByIdForUpdate(int $id): Item;
+
+    public function decrementStock(Item $item, int $quantity): void;
+
+    public function incrementStock(Item $item, int $quantity): void;
 }
