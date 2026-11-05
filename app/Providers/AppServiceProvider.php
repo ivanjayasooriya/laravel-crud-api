@@ -11,12 +11,19 @@ use App\Repositories\Implementations\ItemRepository;
 use App\Repositories\Interfaces\OrderRepositoryInterface;
 use App\Repositories\Implementations\OrderRepository;
 
+use App\Models\Customer;
+use App\Models\Item;
+use App\Models\Order;
+use App\Policies\CustomerPolicy;
+use App\Policies\ItemPolicy;
+use App\Policies\OrderPolicy;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
      */
-    public function register(): void
+    public function register(): void // Bind repositories
     {
         // Customer Repository binding
         $this->app->bind(
@@ -40,8 +47,10 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
+    public function boot(): void // Register policies
     {
-        //
+        Gate::policy(Customer::class, CustomerPolicy::class); // Allow admins and staff to view any customer
+        Gate::policy(Item::class, ItemPolicy::class);
+        Gate::policy(Order::class, OrderPolicy::class);
     }
 }
