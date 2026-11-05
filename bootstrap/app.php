@@ -14,7 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->alias('role', EnsureUserHasRole::class); // Register the EnsureUserHasRole middleware with the alias 'role'    
+        $middleware->alias(['role', EnsureUserHasRole::class]); // Register the EnsureUserHasRole middleware with the alias 'role'    
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
