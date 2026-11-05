@@ -19,6 +19,8 @@ class CustomerController extends Controller
     // GET: Retrieve all customers
     public function index()
     {
+        $this->authorize('viewAny', Customer::class);
+
         $customers = $this->customerService->getAllCustomers();
 
         return CustomerResource::collection($customers);
@@ -27,6 +29,8 @@ class CustomerController extends Controller
     // POST: Create a new customer
     public function store(StoreCustomerRequest $request)
     {
+        $this->authorize('create', Customer::class);
+
         $customer = $this->customerService->createCustomer(
             $request->validated()
         );
@@ -41,12 +45,16 @@ class CustomerController extends Controller
     {
         $customer = $this->customerService->getCustomerById((int) $id);
 
+        $this->authorize('view', $customer);
+
         return new CustomerResource($customer);
     }
 
     // PUT/PATCH: Update an existing customer
     public function update(UpdateCustomerRequest $request, string $id)
     {
+        $this->authorize('update', Customer::class);
+
         $customer = $this->customerService->updateCustomer(
             (int) $id,
             $request->validated()
@@ -58,6 +66,8 @@ class CustomerController extends Controller
     // DELETE: Remove a customer
     public function destroy(string $id)
     {
+        $this->authorize('delete', Customer::class);
+        
         $deleted = $this->customerService->deleteCustomer((int) $id);
 
         if (!$deleted) {
