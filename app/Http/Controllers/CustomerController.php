@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Services\CustomerService;
 use App\Http\Resources\CustomerResource;
+use App\Http\Requests\StoreCustomerRequest;
+use App\Http\Requests\UpdateCustomerRequest;
 
 class CustomerController extends Controller
 {
@@ -24,16 +25,11 @@ class CustomerController extends Controller
     }
 
     // POST: Create a new customer
-    public function store(Request $request)
+    public function store(StoreCustomerRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:customers,email',
-            'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string',
-        ]);
-
-        $customer = $this->customerService->createCustomer($validated);
+        $customer = $this->customerService->createCustomer(
+            $request->validated()
+        );
 
         return (new CustomerResource($customer))
             ->response()
@@ -49,18 +45,11 @@ class CustomerController extends Controller
     }
 
     // PUT/PATCH: Update an existing customer
-    public function update(Request $request, string $id)
+    public function update(UpdateCustomerRequest $request, string $id)
     {
-        $validated = $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-            'email' => 'sometimes|required|email|unique:customers,email,' . $id,
-            'phone' => 'sometimes|nullable|string|max:20',
-            'address' => 'sometimes|nullable|string',
-        ]);
-
         $customer = $this->customerService->updateCustomer(
             (int) $id,
-            $validated
+            $request->validated()
         );
 
         return new CustomerResource($customer);
