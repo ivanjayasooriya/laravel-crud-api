@@ -3,25 +3,25 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Customer;
+use App\Services\CustomerService;
 use App\Http\Resources\CustomerResource;
 
 class CustomerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    private CustomerService $customerService;
+
+    public function __construct(CustomerService $customerService)
+    {
+        $this->customerService = $customerService;
+    }
 
     // GET: Retrieve all customers
     public function index()
     {
-        $customers = Customer::latest()->paginate(10); // Fetch customers with pagination (10 per page)
+        $customers = $this->customerService->getAllCustomers();
+
         return CustomerResource::collection($customers);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
 
     // POST: Create a new customer
     public function store(Request $request)
@@ -33,60 +33,52 @@ class CustomerController extends Controller
             'address' => 'nullable|string',
         ]);
 
-        $customer = Customer::create($validated);
+        $customer = $this->customerService->createCustomer($validated);
+
         return (new CustomerResource($customer))
             ->response()
-            ->setStatusCode(201); // Return the created customer with a 201 status code
+            ->setStatusCode(201);
     }
-
-    /**
-     * Display the specified resource.
-     */
 
     // GET: Retrieve a specific customer
     public function show(string $id)
     {
-        $customer = Customer::findOrFail($id); // Find the customer by ID or fail
+        $customer = $this->customerService->getCustomerById((int) $id);
+
         return new CustomerResource($customer);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-
-    // PUT: Update an existing customer
+    // PUT/PATCH: Update an existing customer
     public function update(Request $request, string $id)
     {
-        $customer = Customer::findOrFail($id); // Find the customer by ID or fail
         $validated = $request->validate([
             'name' => 'sometimes|required|string|max:255',
-            'email' => 'sometimes|required|email|unique:customers,email,' . $customer->id,
-            'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string',
+            'email' => 'sometimes|required|email|unique:customers,email,' . $id,
+            'phone' => 'sometimes|nullable|string|max:20',
+            'address' => 'sometimes|nullable|string',
         ]);
 
-        $customer->update($validated);
+        $customer = $this->customerService->updateCustomer(
+            (int) $id,
+            $validated
+        );
+
         return new CustomerResource($customer);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
 
     // DELETE: Remove a customer
     public function destroy(string $id)
     {
-        $customer = Customer::findOrFail($id);
+        $deleted = $this->customerService->deleteCustomer((int) $id);
 
-        if ($customer->orders()->exists()) {
+        if (!$deleted) {
             return response()->json([
                 'message' => 'Cannot delete customer with existing orders.',
-            ], 409); // Return a 409 status code if the customer has existing orders
+            ], 409);
         }
 
-        $customer->delete();
-        return response()->json([ 
+        return response()->json([
             'message' => 'Customer deleted successfully.',
-        ], 200); // Return a success message with a 200 status code
+        ], 200);
     }
 }

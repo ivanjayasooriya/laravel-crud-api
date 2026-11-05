@@ -4,35 +4,45 @@ namespace App\Repositories\Implementations;
 
 use App\Models\Customer;
 use App\Repositories\Interfaces\CustomerRepositoryInterface;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class CustomerRepository implements CustomerRepositoryInterface
 {
-    public function getAll()
+    // Retrieve all customers with pagination
+    public function getAll(): LengthAwarePaginator
     {
         return Customer::latest()->paginate(10);
     }
 
-    public function findById(int $id)
+    // Find a customer by ID
+    public function findById(int $id): Customer
     {
         return Customer::findOrFail($id);
     }
 
-    public function create(array $data)
+    // Create a new customer
+    public function create(array $data): Customer
     {
         return Customer::create($data);
     }
 
-    public function update(int $id, array $data)
+    // Update an existing customer
+    public function update(Customer $customer, array $data): Customer
     {
-        $customer = $this->findById($id);
-        
         $customer->update($data);
-        return $customer;
+
+        return $customer->refresh();
     }
 
-    public function delete(int $id)
+    // Delete a customer
+    public function delete(Customer $customer): void
     {
-        $customer = $this->findById($id);
-        return $customer->delete();  
+        $customer->delete();
+    }
+
+    // Check whether the customer has existing orders
+    public function hasOrders(Customer $customer): bool
+    {
+        return $customer->orders()->exists();
     }
 }

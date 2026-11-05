@@ -2,40 +2,57 @@
 
 namespace App\Services;
 
+use App\Models\Customer;
 use App\Repositories\Interfaces\CustomerRepositoryInterface;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class CustomerService
 {
-   private CustomerRepositoryInterface $customerRepository;
+    private CustomerRepositoryInterface $customerRepository;
 
-   // Dependency injection of the CustomerRepositoryInterface
-   public function __construct(CustomerRepositoryInterface $customerRepository)
-   {
-       $this->customerRepository = $customerRepository;
-   }
-
-   public function getAllCustomers()
-   {
-       return $this->customerRepository->getAll();
-   }
-
-    public function getCustomerById(int $id)
+    public function __construct(CustomerRepositoryInterface $customerRepository)
     {
-         return $this->customerRepository->findById($id);
+        $this->customerRepository = $customerRepository;
     }
 
-    public function createCustomer(array $data)
+    // Retrieve all customers
+    public function getAllCustomers(): LengthAwarePaginator
+    {
+        return $this->customerRepository->getAll();
+    }
+
+    // Retrieve a customer by ID
+    public function getCustomerById(int $id): Customer
+    {
+        return $this->customerRepository->findById($id);
+    }
+
+    // Create a customer
+    public function createCustomer(array $data): Customer
     {
         return $this->customerRepository->create($data);
     }
 
-    public function updateCustomer(int $id, array $data)
+    // Update a customer
+    public function updateCustomer(int $id, array $data): Customer
     {
-        return $this->customerRepository->update($id, $data);
+        $customer = $this->customerRepository->findById($id);
+
+        return $this->customerRepository->update($customer, $data);
     }
 
-    public function deleteCustomer(int $id)
+    // Delete a customer
+    // Returns false if the customer has existing orders
+    public function deleteCustomer(int $id): bool
     {
-        return $this->customerRepository->delete($id);
+        $customer = $this->customerRepository->findById($id);
+
+        if ($this->customerRepository->hasOrders($customer)) {
+            return false;
+        }
+
+        $this->customerRepository->delete($customer);
+
+        return true;
     }
 }
