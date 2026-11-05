@@ -6,6 +6,8 @@ use Illuminate\Support\ServiceProvider;
 
 use App\Repositories\Interfaces\CustomerRepositoryInterface;
 use App\Repositories\Implementations\CustomerRepository;
+use App\Repositories\Interfaces\ItemRepositoryInterface;
+use App\Repositories\Implementations\ItemRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,7 +16,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(CustomerRepositoryInterface::class, CustomerRepository::class);
+        // Customer Repository binding
+        $this->app->bind(
+            CustomerRepositoryInterface::class, 
+            CustomerRepository::class
+        );
+
+        // Item Repository binding
+        $this->app->bind(
+            ItemRepositoryInterface::class,
+            ItemRepository::class
+        );
     }
 
     /**
