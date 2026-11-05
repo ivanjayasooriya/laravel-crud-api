@@ -45,4 +45,24 @@ class ItemRepository implements ItemRepositoryInterface
     {
         return $item->orders()->exists();
     }
+
+    // Find an item and lock its database row
+    public function findByIdForUpdate(int $id): Item
+    {
+        return Item::where('id', $id)
+            ->lockForUpdate()
+            ->firstOrFail();
+    }
+    
+    // Reduce item stock
+    public function decrementStock(Item $item, int $quantity): void
+    {
+        $item->decrement('stock', $quantity);
+    }
+    
+    // Restore item stock
+    public function incrementStock(Item $item, int $quantity): void
+    {
+        $item->increment('stock', $quantity);
+    }
 }
