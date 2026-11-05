@@ -50,7 +50,7 @@ This API uses Laravel Sanctum for stateless API authentication. Public authentic
 - `GET /api/me` - fetch the authenticated user
 - `GET /api/user` - alias for the authenticated user, also backed by Sanctum
 
-After a successful login or registration, include the returned token in the `Authorization` header for protected requests:
+After a successful login or registration, copy the `token` value from the response and include it as a bearer token in the `Authorization` header for protected requests:
 
 ```http
 Authorization: Bearer <token>
