@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Customer;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 // these are Laravel 13 newer features that allow you to define the fillable and hidden attributes of the model using attributes instead of properties. This can make the code cleaner and easier to read.
 #[Fillable(['name', 'email', 'password'])] // This attribute is used to specify which attributes of the model are mass assignable. In this case, the 'name', 'email', and 'password' attributes can be mass assigned.
@@ -46,5 +48,31 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Get the customer associated with the user.
+     */
+    public function customer(): HasOne
+    {
+        return $this->hasOne(Customer::class);
+    }
+
+    // Check if the user has a Admin role
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    // Check if the user has a Staff role
+    public function isStaff(): bool
+    {
+        return $this->role === 'staff';
+    }
+
+    // Check if the user has a Customer role
+    public function isCustomer(): bool
+    {
+        return $this->role === 'customer';
     }
 }
