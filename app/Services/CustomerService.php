@@ -8,6 +8,7 @@ class CustomerService
 {
    private CustomerRepositoryInterface $customerRepository;
 
+   // Dependency injection of the CustomerRepositoryInterface
    public function __construct(CustomerRepositoryInterface $customerRepository)
    {
        $this->customerRepository = $customerRepository;
