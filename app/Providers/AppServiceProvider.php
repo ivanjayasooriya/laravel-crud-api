@@ -8,6 +8,8 @@ use App\Repositories\Interfaces\CustomerRepositoryInterface;
 use App\Repositories\Implementations\CustomerRepository;
 use App\Repositories\Interfaces\ItemRepositoryInterface;
 use App\Repositories\Implementations\ItemRepository;
+use App\Repositories\Interfaces\OrderRepositoryInterface;
+use App\Repositories\Implementations\OrderRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
