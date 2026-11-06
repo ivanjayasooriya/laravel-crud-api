@@ -43,9 +43,9 @@ class CustomerController extends Controller
     // GET: Retrieve a specific customer
     public function show(string $id)
     {
-        $customer = $this->customerService->getCustomerById((int) $id);
-
         $this->authorize('view', $customer);
+
+        $customer = $this->customerService->getCustomerById((int) $id);
 
         return new CustomerResource($customer);
     }
