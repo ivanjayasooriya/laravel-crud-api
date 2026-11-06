@@ -7,6 +7,8 @@ use App\Http\Resources\OrderResource;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 
+use App\Models\Order;
+
 class OrderController extends Controller
 {
     private OrderService $orderService;
@@ -19,6 +21,8 @@ class OrderController extends Controller
     // GET: Retrieve all orders
     public function index()
     {
+        $this->authorize('viewAny', Order::class);
+
         $orders = $this->orderService->getAllOrders();
 
         return OrderResource::collection($orders);
@@ -27,6 +31,8 @@ class OrderController extends Controller
     // POST: Create a new order
     public function store(StoreOrderRequest $request)
     {
+        $this->authorize('create', Order::class);
+
         $order = $this->orderService->createOrder(
             $request->validated()
         );
@@ -39,6 +45,8 @@ class OrderController extends Controller
     // GET: Retrieve a specific order
     public function show(string $id)
     {
+        $this->authorize('view', $order);
+
         $order = $this->orderService->getOrderById((int) $id);
 
         return new OrderResource($order);
@@ -47,6 +55,8 @@ class OrderController extends Controller
     // PUT/PATCH: Update an existing order
     public function update(UpdateOrderRequest $request, string $id)
     {
+        $this->authorize('update', $order);
+
         $order = $this->orderService->updateOrder(
             (int) $id,
             $request->validated()
@@ -58,6 +68,8 @@ class OrderController extends Controller
     // DELETE: Delete an order
     public function destroy(string $id)
     {
+        $this->authorize('delete', $order);
+        
         $this->orderService->deleteOrder((int) $id);
 
         return response()->json([
