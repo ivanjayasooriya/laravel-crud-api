@@ -32,6 +32,14 @@ class OrderService
         return $this->orderRepository->getAll();
     }
 
+    // Retrieve all orders for a specific customer
+    public function getOrdersForCustomer(int $customerId)
+    {
+        Log::info("Orders for customer {$customerId} retrieved");
+
+        return $this->orderRepository->getAllForCustomer($customerId);
+    }
+
     // Retrieve an order by ID
     public function getOrderById(int $id): Order
     {
