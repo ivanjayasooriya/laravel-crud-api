@@ -33,8 +33,14 @@ class OrderController extends Controller
     {
         $this->authorize('create', Order::class);
 
+        $data = $request->validated();
+
+        if ($request->user()?->isCustomer()) {
+            $data['customer_id'] = $request->user()->customer_id;
+        }
+
         $order = $this->orderService->createOrder(
-            $request->validated()
+            $data
         );
 
         return (new OrderResource($order))
@@ -69,7 +75,7 @@ class OrderController extends Controller
     public function destroy(string $id)
     {
         $this->authorize('delete', $order);
-        
+
         $this->orderService->deleteOrder((int) $id);
 
         return response()->json([
