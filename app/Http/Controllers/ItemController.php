@@ -7,6 +7,8 @@ use App\Http\Resources\ItemResource;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
 
+use App\Models\Item;
+
 class ItemController extends Controller
 {
     private ItemService $itemService;
@@ -19,6 +21,8 @@ class ItemController extends Controller
     // GET: Retrieve all items
     public function index()
     {
+        $this->authorize('viewAny', Item::class);
+
         $items = $this->itemService->getAllItems();
 
         return ItemResource::collection($items);
@@ -27,6 +31,9 @@ class ItemController extends Controller
     // POST: Create a new item
     public function store(StoreItemRequest $request)
     {
+
+        $this->authorize('create', Item::class);
+
         $item = $this->itemService->createItem(
             $request->validated()
         );
@@ -39,6 +46,8 @@ class ItemController extends Controller
     // GET: Retrieve a specific item
     public function show(string $id)
     {
+        $this->authorize('view', Item::class);
+
         $item = $this->itemService->getItemById((int) $id);
 
         return new ItemResource($item);
@@ -47,6 +56,8 @@ class ItemController extends Controller
     // PUT/PATCH: Update an existing item
     public function update(UpdateItemRequest $request, string $id)
     {
+        $this->authorize('update', Item::class);
+
         $item = $this->itemService->updateItem(
             (int) $id,
             $request->validated()
@@ -58,6 +69,8 @@ class ItemController extends Controller
     // DELETE: Remove an item
     public function destroy(string $id)
     {
+        $this->authorize('delete', Item::class);
+        
         $deleted = $this->itemService->deleteItem((int) $id);
 
         if (!$deleted) {
