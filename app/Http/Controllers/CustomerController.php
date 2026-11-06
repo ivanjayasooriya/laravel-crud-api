@@ -7,6 +7,8 @@ use App\Http\Resources\CustomerResource;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
 
+use App\Models\Customer;
+
 class CustomerController extends Controller
 {
     private CustomerService $customerService;
