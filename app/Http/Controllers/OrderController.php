@@ -23,7 +23,13 @@ class OrderController extends Controller
     {
         $this->authorize('viewAny', Order::class);
 
-        $orders = $this->orderService->getAllOrders();
+        $user = request()->user();
+
+        if ($user->isCustomer()) {
+            $orders = $this->orderService->getOrdersForCustomer($user->customer->id);
+        } else {
+            $orders = $this->orderService->getAllOrders();
+        }
 
         return OrderResource::collection($orders);
     }
