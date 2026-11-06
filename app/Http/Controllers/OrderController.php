@@ -11,6 +11,8 @@ use App\Models\Order;
 
 class OrderController extends Controller
 {
+    use AuthorizesRequests, ValidatesRequests;
+
     private OrderService $orderService;
 
     public function __construct(OrderService $orderService)

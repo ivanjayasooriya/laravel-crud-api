@@ -11,6 +11,8 @@ use App\Models\Item;
 
 class ItemController extends Controller
 {
+    use AuthorizesRequests, ValidatesRequests;
+
     private ItemService $itemService;
 
     public function __construct(ItemService $itemService)

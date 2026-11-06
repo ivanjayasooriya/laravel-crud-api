@@ -11,6 +11,8 @@ use App\Models\Customer;
 
 class CustomerController extends Controller
 {
+    use AuthorizesRequests, ValidatesRequests;
+
     private CustomerService $customerService;
 
     public function __construct(CustomerService $customerService)
