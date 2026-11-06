@@ -16,6 +16,15 @@ class OrderRepository implements OrderRepositoryInterface
             ->paginate(10);
     }
 
+    // Retrieve all orders for a specific customer
+    public function getAllForCustomer(int $customerId): LengthAwarePaginator
+    {
+        return Order::with(['customer', 'items'])
+            ->where('customer_id', $customerId)
+            ->latest()
+            ->paginate(10);
+    }
+
     // Find an order by ID
     public function findById(int $id): Order
     {
