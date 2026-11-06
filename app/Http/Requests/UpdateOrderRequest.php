@@ -24,9 +24,17 @@ class UpdateOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'customer_id' => 'sometimes|required|exists:customers,id',
+            'customer_id' => [
+                $this->user()?->isCustomer() ? 'prohibited' : 'sometimes',
+                'required',
+                'exists:customers,id',
+            ],
 
-            'order_date' => 'sometimes|required|date',
+            'order_date' => [
+                'sometimes',
+                'required',
+                'date',
+            ],
 
             'status' => [
                 'sometimes',
