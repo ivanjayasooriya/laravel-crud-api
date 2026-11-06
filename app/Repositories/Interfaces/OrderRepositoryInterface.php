@@ -9,6 +9,8 @@ interface OrderRepositoryInterface
 {
     public function getAll(): LengthAwarePaginator;
 
+    public function getAllForCustomer(int $customerId): LengthAwarePaginator;
+
     public function findById(int $id): Order;
 
     public function findByIdForUpdate(int $id): Order;
