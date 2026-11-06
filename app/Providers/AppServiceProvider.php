@@ -18,6 +18,8 @@ use App\Policies\CustomerPolicy;
 use App\Policies\ItemPolicy;
 use App\Policies\OrderPolicy;
 
+use Illuminate\Support\Facades\Gate;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
